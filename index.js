@@ -1,99 +1,104 @@
-const xiaomi12Precio = 279000;
-const xiaomi11Precio = 104899;
-const samsungS23Precio = 489999;
-const samsungS22Precio = 349999;
-const motorolaG9Precio = 73500;
-const motorolaG8Precio = 34999;
+// Arreglo para almacenar las tareas
+const listaDeTareas = [];
+//Se declara vacio para luego poder sumar todas las tareas a ese arreglo.
 
-function xiaomi(precio) {
-    let cantidad = prompt("Ingrese la cantidad de celulares que desea comprar");
-    cantidad = parseInt(cantidad);
 
-    if (cantidad >= 2) {
-        let total = precio * cantidad * 0.7;
-        alert("El monto total es: " + total);
-    }
-    else{
-        let total = precio * cantidad;
-        alert("El monto total es: " + total)
+
+// Función constructora
+class Tarea {
+    constructor(nombre, descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
     }
 }
+// Creo la funcion constructora para usar como objeto la tarea que quiero agregar
 
-function samsung(precio) {
-    let cantidad = prompt("Ingrese la cantidad de celulares que desea comprar");
-    cantidad = parseInt(cantidad);
-    let total = precio * cantidad + 7500
-    alert("El monto total es: " + total)
+
+
+// Función para agregar una tarea
+function agregarTarea() {
+    const nombre = prompt("Ingrese el nombre de la tarea:");
+    const descripcion = prompt("Ingrese una descripción de la tarea:");
+    if (nombre && descripcion) {
+        const nuevaTarea = new Tarea(nombre, descripcion);
+        listaDeTareas.push(nuevaTarea);
+        alert("Tarea agregada con éxito.");
+    }
 }
+// La funcion pushea una tarea llevando a la funcion constructora el nombre y la descripcion
 
-function motorola(precio) {
-    let cantidad = prompt("Ingrese la cantidad de celulares que desea comprar");
-    cantidad = parseInt(cantidad);
 
-    let total = 0;
-    let hayGris = false;
 
-    for (let i = 1; i <= cantidad; i++) {
-        let color = prompt("Seleccione el color de su celular \nGris \nNegro \nBlanco");
-        color = color.toUpperCase();
+// Función para ver todas las tareas
+function verTodasLasTareas() {
+    if (listaDeTareas.length === 0) {
+        alert("La lista de tareas está vacía.");
+    } else {
+        let tareaString = "";
+        listaDeTareas.forEach((tarea, index) => {
+            tareaString += `Tarea ${index + 1}:\nNombre: ${tarea.nombre}\nDescripción: ${tarea.descripcion}\n\n`;
+        });
+        alert("Tareas:\n" + tareaString);
+    }
+}
+// Muestro en pantalla con un foreach para cada tarea de la lista de tareas.
 
-        if (color === "GRIS") {
-            hayGris = true;
-            total = total + precio * 0.75; 
+
+
+// Función para buscar una tarea
+function buscarTarea() {
+    const consulta = prompt("Ingrese una palabra clave para buscar:");
+    if (consulta) {
+        const tareasEncontradas = listaDeTareas.filter(tarea =>
+            tarea.nombre.toLowerCase().includes(consulta.toLowerCase()) ||
+            tarea.descripcion.toLowerCase().includes(consulta.toLowerCase())
+        );
+        if (tareasEncontradas.length === 0) {
+            alert("No se encontraron tareas que coincidan con la búsqueda.");
         } else {
-            total = total + precio;
+            let tareaString = "";
+            tareasEncontradas.forEach((tarea, index) => {
+                tareaString += `Tarea ${index + 1}:\nNombre: ${tarea.nombre}\nDescripción: ${tarea.descripcion}\n\n`;
+            });
+            alert("Tareas encontradas:\n" + tareaString);
         }
     }
-
-    if (hayGris) {
-        alert("El monto total con descuento es: " + total);
-    } else {
-        alert("El monto total es: " + total);
-    }
 }
+// Utilizo el metodo filter para buscar palabras claves en la tarea. 
 
 
-function menuProductos() {
-    let producto = prompt("Seleccione el producto que desea:\nXiaomi Redmi Note 12 $ 279.000\nXiaomi Redmi Note 11 $ 104.899\nSamsung Galaxy S23 $ 489.999\nSamsung Galaxy S22 $ 349.999\nMotorola G9 $ 73.500\nMotorola G8 $ 34.999");
-    producto = producto.toUpperCase();
 
-    switch (producto) {
-        case "XIAOMI REDMI NOTE 12":
-            alert("30% DE DESCUENTO EN XIAOMI LLEVANDO 2 O MAS CELULARES");
-            xiaomi(xiaomi12Precio);
+
+// Menú principal
+let trueOrFalse = true;
+
+while (trueOrFalse) {
+    const opcion = prompt(
+        "Seleccione una opción:\n" +
+        "1. Agregar tarea\n" +
+        "2. Ver todas las tareas\n" +
+        "3. Buscar tarea\n" +
+        "4. Salir"
+    );
+
+    switch (opcion) {
+        case "1":
+            agregarTarea();
             break;
-        case "XIAOMI REDMI NOTE 11":
-            alert("30% DE DESCUENTO EN XIAOMI LLEVANDO 2 O MAS CELULARES");
-            xiaomi(xiaomi11Precio);
+        case "2":
+            verTodasLasTareas();
             break;
-        case "SAMSUNG GALAXY S23":
-            alert("PRODUCTOS SAMSUNG +$ 7500 DE ENVIO POR CELULAR");
-            samsung(samsungS23Precio);
+        case "3":
+            buscarTarea();
             break;
-        case "SAMSUNG GALAXY S22":
-            alert("PRODUCTOS SAMSUNG +$ 7500 DE ENVIO POR CELULAR");
-            samsung(samsungS22Precio);
-            break;
-        case "MOTOROLA G9":
-            alert("25% DE DESCUENTO POR CADA CELULAR GRIS QUE LLEVES");
-            motorola(motorolaG9Precio);
-            break;
-        case "MOTOROLA G8":
-            alert("25% DE DESCUENTO POR CADA CELULAR GRIS QUE LLEVES");
-            motorola(motorolaG8Precio);
+        case "4":
+            trueOrFalse = false;
             break;
         default:
-            alert("Producto no reconocido");
-            break;
+            alert("Opción no válida. Por favor, seleccione una opción válida.");
     }
 }
+// Utilizo trueOrFalse para crear un bucle que pueda pararse y comparo con un switch las posibles opciones.
 
-while (true) {
-    let opcion = prompt("Digite P para visualizar la lista de productos");
-    opcion = opcion.toUpperCase();
-    if (opcion === "P") {
-        menuProductos();
-    } else {
-        break;
-    }
-}
+
+
